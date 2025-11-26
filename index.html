@@ -3,203 +3,369 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sistema Line Haul + Operação MG (API)</title>
+  <title>Sistema Line Haul + Operação MG</title>
 
   <style>
     * { box-sizing: border-box; }
-    body { margin: 0; font-family: Arial; background: #f4f4f9; }
 
-    /* LOGIN */
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f4f4f9;
+    }
+
+    /* ===== LOGIN ===== */
     #loginScreen {
-      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: #FF5722; color: white; display: flex;
-      flex-direction: column; align-items: center; justify-content: center;
-      text-align: center; padding: 20px;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: #FF5722;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 20px;
     }
-    #loginScreen input {
-      width: 250px; padding: 10px; border-radius: 8px; border: none;
-    }
-    #loginScreen button {
-      margin-top: 15px; padding: 10px 20px; border-radius: 8px;
-      background: white; color: #FF5722; font-weight: bold; cursor: pointer;
-    }
-    #loginError { margin-top: 10px; font-weight: bold; color: yellow; }
 
-    /* ABAS */
+    #loginScreen input {
+      width: 250px;
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      margin-top: 10px;
+      font-size: 16px;
+    }
+
+    #loginScreen button {
+      margin-top: 15px;
+      padding: 10px 20px;
+      border-radius: 8px;
+      border: none;
+      background: white;
+      color: #FF5722;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    #loginError {
+      margin-top: 10px;
+      font-weight: bold;
+      color: yellow;
+    }
+
+    /* ===== ABAS ===== */
     .tabs {
-      max-width: 1200px; margin: 20px auto 0; display: flex; gap: 10px;
+      max-width: 1200px;
+      margin: 20px auto 0;
+      display: flex;
+      gap: 10px;
     }
+
     .tab-button {
-      flex: 1; padding: 12px; background: #333; color: white; border: none;
-      cursor: pointer; font-weight: bold; border-radius: 8px 8px 0 0;
+      flex: 1;
+      padding: 12px;
+      border-radius: 8px 8px 0 0;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+      background: #333;
+      color: #fff;
+      transition: 0.2s;
     }
-    .tab-button.active { background: #FF5722; }
+
+    .tab-button.active {
+      background: #FF5722;
+    }
 
     .tab-content { display: none; }
     .tab-content.active { display: block; }
 
-    /* CONTAINER */
+    /* ===== CONTAINER ===== */
     .container {
-      max-width: 1200px; margin: 0 auto; background: white; padding: 20px;
-      border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      margin-top: 0;
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     }
+
     h2 {
-      text-align: center; background: #FF5722; padding: 15px;
-      color: white; border-radius: 10px;
+      text-align: center;
+      background: #FF5722;
+      padding: 15px;
+      color: white;
+      border-radius: 10px;
+      margin-top: 0;
+      font-size: 24px;
     }
 
     label { font-weight: bold; margin-top: 10px; display: block; }
+
     input, select {
-      width: 100%; padding: 10px; margin-top: 5px;
-      border-radius: 6px; border: 1px solid #ccc;
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
     }
+
     button {
-      padding: 10px 15px; background: #FF5722; color: white;
-      border: none; border-radius: 8px; margin-top: 15px; cursor: pointer;
+      background: #FF5722;
+      color: white;
+      border: none;
+      padding: 12px;
+      margin-top: 15px;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
     }
+
+    button:hover { background: #e64a19; }
+
+    .table-wrapper { overflow-x: auto; margin-top: 25px; }
 
     table {
-      width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 20px;
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
     }
-    th { background: #FF5722; color: white; padding: 8px; }
-    td { padding: 8px; border: 1px solid #ddd; }
+
+    th {
+      background: #FF5722;
+      color: white;
+      padding: 8px;
+      border: 1px solid #ccc;
+    }
+
+    td {
+      padding: 8px;
+      border: 1px solid #ccc;
+    }
+
+    tr:nth-child(even) { background: #fff3eb; }
   </style>
 </head>
+
 <body>
 
-<!-- LOGIN -->
+<!-- ===== LOGIN ===== -->
 <div id="loginScreen">
   <h2>Acesso Restrito</h2>
-  <p>Digite a senha</p>
-  <input type="password" id="senhaLogin">
+  <p>Digite a senha para acessar o sistema</p>
+  <input type="password" id="senhaLogin" placeholder="Digite a senha...">
   <button onclick="validarSenha()">Entrar</button>
   <div id="loginError"></div>
 </div>
 
-<!-- SISTEMA -->
-<div id="sistema" style="display:none">
+<!-- ===== SISTEMA ===== -->
+<div id="sistema" style="display:none;">
 
   <div class="tabs">
-    <button class="tab-button active" data-tab="lh">Line Haul</button>
-    <button class="tab-button" data-tab="mg">Operação MG</button>
+    <button class="tab-button active" data-tab="linehaul">Line Haul</button>
+    <button class="tab-button" data-tab="operacao">Operação - MG</button>
   </div>
 
-  <!-- LINE HAUL -->
-  <div id="tab-lh" class="container tab-content active">
+  <!-- ===== TAB LINE HAUL ===== -->
+  <div id="tab-linehaul" class="tab-content active">
 
-    <h2>Line Haul</h2>
+    <div class="container">
+      <h2>Controle de Line Haul</h2>
 
-    <label>Data</label>
-    <input type="date" id="lhDate">
+      <label>DATE</label>
+      <input id="lhDate" type="date" onchange="atualizarWeekEMes()">
 
-    <label>Week</label>
-    <input type="text" id="lhWeek" readonly>
+      <label>WEEK</label>
+      <input id="lhWeek" type="text" readonly>
 
-    <label>Sorter</label>
-    <select id="lhSorter">
-      <option>FMH-BHZ-12 Hub_MG_SeteLagoas</option>
-    </select>
+      <label>SORTER CODE</label>
+      <select id="lhSorter">
+        <option value="">Selecione</option>
+        <option>SoC_SP_São Bernardo do Campo</option>
+        <option>FMH-BHZ-12 Hub_MG_SeteLagoas</option>
+        <option>FMH-BHZ-10 Hub_MG_BH</option>
+        <option>FM Hub_SP_Itaquaquecetuba</option>
+        <option>SOC - RJ02</option>
+        <option>HUB SP-VILA GUI</option>
+        <option>SOC-SP06 GUA</option>
+        <option>SOC-SP02 SAN</option>
+        <option>SOC - MG02 BETIM</option>
+        <option>HUB LMG-05 CONT</option>
+      </select>
 
-    <label>Tipo</label>
-    <select id="lhTipo">
-      <option>BACKLOG</option>
-      <option>LINE HAUL</option>
-    </select>
+      <label>TIPO</label>
+      <select id="lhTipo">
+        <option value="">Selecione</option>
+        <option>BACKLOG</option>
+        <option>LINE HAUL</option>
+      </select>
 
-    <label>Origin</label>
-    <select id="lhOriginPlan">
-      <option>AM</option><option>PM</option>
-    </select>
+      <label>ORIGIN PLAN</label>
+      <select id="lhOriginPlan">
+        <option value="">Selecione</option>
+        <option>AM</option>
+        <option>PM</option>
+      </select>
 
-    <label>Processing</label>
-    <select id="lhProcessingPlan">
-      <option>AM</option><option>PM</option>
-    </select>
+      <label>PROCESSING PLAN</label>
+      <select id="lhProcessingPlan">
+        <option value="">Selecione</option>
+        <option>AM</option>
+        <option>PM</option>
+      </select>
 
-    <label>Nº Line Haul</label>
-    <input id="lhNumero">
+      <label>NÚMERO DA LINE HAUL</label>
+      <input id="lhNumero" type="text">
 
-    <label>Volume</label>
-    <input type="number" id="lhVolume">
+      <label>VOLUME</label>
+      <input id="lhVolume" type="number">
 
-    <label>Gaylords</label>
-    <input type="number" id="lhGaylords">
+      <label>GAYLORDS</label>
+      <input id="lhGaylords" type="number">
 
-    <label>Sacas</label>
-    <input type="number" id="lhSacas">
+      <label>SACAS</label>
+      <input id="lhSacas" type="number">
 
-    <label>Status Rot.</label>
-    <select id="lhStatusRot">
-      <option>PROCESSADO</option>
-      <option>NÃO PROCESSADO</option>
-    </select>
+      <label>STATUS ROTEIRIZAÇÃO</label>
+      <select id="lhStatusRot">
+        <option value="">Selecione</option>
+        <option>PROCESSADO</option>
+        <option>NÃO PROCESSADO</option>
+      </select>
 
-    <label>Status</label>
-    <select id="lhStatus">
-      <option>LIBERADO</option>
-      <option>HANDOVER REALIZADO</option>
-    </select>
+      <label>STATUS</label>
+      <select id="lhStatus">
+        <option value="">Selecione</option>
+        <option>LIBERADO</option>
+        <option>HANDOVER REALIZADO</option>
+      </select>
 
-    <button onclick="salvarLineHaulAPI()">Salvar</button>
+      <label>MÊS</label>
+      <input id="lhMes" type="text" readonly>
 
-    <table id="tableLH"></table>
+      <button onclick="adicionarLineHaul()">Adicionar Registro</button>
+
+      <h3>Histórico Line Haul</h3>
+
+      <div class="table-wrapper">
+        <table id="historicoTable">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>DATE</th>
+              <th>WEEK</th>
+              <th>SORTER</th>
+              <th>TIPO</th>
+              <th>ORIGIN</th>
+              <th>PROCESS</th>
+              <th>Nº LH</th>
+              <th>VOLUME</th>
+              <th>GAYLORDS</th>
+              <th>SACAS</th>
+              <th>ROTEIRIZAÇÃO</th>
+              <th>STATUS</th>
+              <th>MÊS</th>
+              <th>DATA/HORA</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <button onclick="exportarCSV()">Exportar CSV</button>
+    </div>
+
   </div>
 
-  <!-- OPERACAO MG -->
-  <div id="tab-mg" class="container tab-content">
+  <!-- ===== TAB OPERAÇÃO MG ===== -->
+  <div id="tab-operacao" class="tab-content">
 
-    <h2>Operação MG</h2>
+    <div class="container">
+      <h2>Operação - MG</h2>
 
-    <label>Data</label>
-    <input id="mgData" type="date">
+      <label>DATA</label>
+      <input id="mgData" type="date">
 
-    <label>Ciclo</label>
-    <select id="mgCiclo"><option>AM</option><option>PM</option></select>
+      <label>CICLO</label>
+      <select id="mgCiclo">
+        <option value="">Selecione</option>
+        <option>AM</option>
+        <option>PM</option>
+      </select>
 
-    <label>Volume Roteirizado</label>
-    <input id="mgVolume" type="number">
+      <label>VOLUME ROTEIRIZADO</label>
+      <input id="mgVolRoteirizado" type="number">
 
-    <label>Backlog</label>
-    <input id="mgBacklog" type="number">
+      <label>BACKLOG</label>
+      <input id="mgBacklog" type="number">
 
-    <label>Volumoso</label>
-    <input id="mgVolumoso" type="number">
+      <label>VOLUMOSO PROCESSADO</label>
+      <input id="mgVolumoso" type="number">
 
-    <label>Qtd Estação</label>
-    <input id="mgQtdEstacao" type="number">
+      <label>QUANTIDADE ESTAÇÃO</label>
+      <input id="mgQtdEstacao" type="number">
 
-    <label>Início</label>
-    <input id="mgInicio" type="time">
+      <label>HORÁRIO INÍCIO</label>
+      <input id="mgInicio" type="time">
 
-    <label>Fim</label>
-    <input id="mgFim" type="time">
+      <label>HORÁRIO FIM</label>
+      <input id="mgFim" type="time">
 
-    <button onclick="salvarMGAPI()">Salvar</button>
+      <button onclick="addOperacaoMG()">Salvar Registro</button>
 
-    <table id="tableMG"></table>
+      <h3>Histórico Operação MG</h3>
+
+      <div class="table-wrapper">
+        <table id="mgTable">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>DATA</th>
+              <th>CICLO</th>
+              <th>VOLUME ROTEIRIZADO</th>
+              <th>BACKLOG</th>
+              <th>VOLUMOSO PROCESSADO</th>
+              <th>QTD ESTAÇÃO</th>
+              <th>HORA INÍCIO</th>
+              <th>HORA FIM</th>
+              <th>DATA/HORA REGISTRO</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <button onclick="exportarMGCsv()">Exportar CSV</button>
+    </div>
 
   </div>
 
 </div>
 
 <script>
-/* CONFIG */
-const API_URL = "https://script.google.com/macros/s/AKfycbySmb00C7eQkbvCfc7R5E7mVml1FBaXauZuhalDQ-XdEih7xAngh2tIdkDtYQqVm2y-/exec";
-
-/* LOGIN */
+/* ===== CONFIG ===== */
 const senhaCorreta = "LineHaul2025";
+const WORKER_URL = "https://api2.henrique-teixeira.workers.dev/";
+const SECRET = "CIA-KEY-2024-HENRIQUE";
+
+/* ===== LOGIN ===== */
 function validarSenha() {
-  if (senhaLogin.value === senhaCorreta) {
-    loginScreen.style.display = "none";
-    sistema.style.display = "block";
-    carregarLineHaul();
-    carregarOperacaoMG();
+  const senha = document.getElementById("senhaLogin").value;
+  if (senha === senhaCorreta) {
+    document.getElementById("loginScreen").style.display = "none";
+    document.getElementById("sistema").style.display = "block";
+    carregarHistoricoLH();
+    carregarHistoricoMG();
   } else {
-    loginError.innerText = "Senha incorreta!";
+    document.getElementById("loginError").innerText = "Senha incorreta!";
   }
 }
 
-/* ABAS */
+/* ===== ABAS ===== */
 document.querySelectorAll(".tab-button").forEach(btn => {
   btn.onclick = () => {
     document.querySelectorAll(".tab-button").forEach(b => b.classList.remove("active"));
@@ -209,9 +375,56 @@ document.querySelectorAll(".tab-button").forEach(btn => {
   };
 });
 
-/* ==== LINE HAUL - SALVAR ==== */
-function salvarLineHaulAPI() {
-  const dados = {
+/* ===== WEEK + MÊS ===== */
+function getISOWeek(date) {
+  const tmp = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+  const dayNum = tmp.getUTCDay() || 7;
+  tmp.setUTCDate(tmp.getUTCDate() + 4 - dayNum);
+  const yearStart = new Date(Date.UTC(tmp.getUTCFullYear(), 0, 1));
+  return Math.ceil((((tmp - yearStart) / 86400000) + 1) / 7);
+}
+
+function atualizarWeekEMes() {
+  const d = document.getElementById("lhDate").value;
+  if (!d) return;
+  const dt = new Date(d);
+  document.getElementById("lhWeek").value = "W" + getISOWeek(dt);
+  const mes = dt.toLocaleString("pt-BR", { month: "long" });
+  document.getElementById("lhMes").value = mes.charAt(0).toUpperCase() + mes.slice(1);
+}
+
+/* ===== LIMPAR CAMPOS ===== */
+function limparCamposLH() {
+  lhDate.value = "";
+  lhWeek.value = "";
+  lhSorter.value = "";
+  lhTipo.value = "";
+  lhOriginPlan.value = "";
+  lhProcessingPlan.value = "";
+  lhNumero.value = "";
+  lhVolume.value = "";
+  lhGaylords.value = "";
+  lhSacas.value = "";
+  lhStatusRot.value = "";
+  lhStatus.value = "";
+  lhMes.value = "";
+}
+
+function limparCamposMG() {
+  mgData.value = "";
+  mgCiclo.value = "";
+  mgVolRoteirizado.value = "";
+  mgBacklog.value = "";
+  mgVolumoso.value = "";
+  mgQtdEstacao.value = "";
+  mgInicio.value = "";
+  mgFim.value = "";
+}
+
+/* ===== LINE HAUL – SALVAR ===== */
+async function adicionarLineHaul() {
+  const payload = {
+    secret: SECRET,
     type: "salvarLineHaul",
     data: lhDate.value,
     week: lhWeek.value,
@@ -224,25 +437,81 @@ function salvarLineHaulAPI() {
     gaylords: lhGaylords.value,
     sacas: lhSacas.value,
     statusRot: lhStatusRot.value,
-    status: lhStatus.value
+    status: lhStatus.value,
+    mes: lhMes.value
   };
 
-  fetch(API_URL, {
+  await fetch(WORKER_URL, {
     method: "POST",
-    body: JSON.stringify(dados)
-  }).then(() => {
-    alert("Salvo com sucesso!");
-    carregarLineHaul();
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload)
   });
+
+  alert("Registro salvo!");
+  limparCamposLH();
+  carregarHistoricoLH();
 }
 
-/* ==== OPERACAO MG - SALVAR ==== */
-function salvarMGAPI() {
-  const dados = {
+/* ===== LINE HAUL – CARREGAR HISTÓRICO ===== */
+async function carregarHistoricoLH() {
+  const res = await fetch(WORKER_URL + "?type=listarLineHaul");
+  const data = await res.json();
+
+  const tbody = document.querySelector("#historicoTable tbody");
+  tbody.innerHTML = "";
+
+  // pula linha 0 se for cabeçalho (você pode deixar ou não)
+  for (let i = 1; i < data.length; i++) {
+    const r = data[i];
+    tbody.innerHTML += `
+      <tr>
+        <td>${i}</td>
+        <td>${r[0] || ""}</td>
+        <td>${r[1] || ""}</td>
+        <td>${r[2] || ""}</td>
+        <td>${r[3] || ""}</td>
+        <td>${r[4] || ""}</td>
+        <td>${r[5] || ""}</td>
+        <td>${r[6] || ""}</td>
+        <td>${r[7] || ""}</td>
+        <td>${r[8] || ""}</td>
+        <td>${r[9] || ""}</td>
+        <td>${r[10] || ""}</td>
+        <td>${r[11] || ""}</td>
+        <td>${r[12] || ""}</td>
+        <td>${r[13] || ""}</td>
+      </tr>
+    `;
+  }
+}
+
+/* ===== LINE HAUL – EXPORTAR CSV ===== */
+async function exportarCSV() {
+  const res = await fetch(WORKER_URL + "?type=listarLineHaul");
+  const data = await res.json();
+
+  let csv = "date,week,sorter,tipo,origin,processing,numero,volume,gaylords,sacas,status_rot,status,mes,data_hora\n";
+
+  for (let i = 1; i < data.length; i++) {
+    const r = data[i];
+    csv += `${r[0]},${r[1]},${r[2]},${r[3]},${r[4]},${r[5]},${r[6]},${r[7]},${r[8]},${r[9]},${r[10]},${r[11]},${r[12]},${r[13]}\n`;
+  }
+
+  const blob = new Blob(["\ufeff" + csv], { type: "text/csv;charset=utf-8;" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "linehaul_historico.csv";
+  a.click();
+}
+
+/* ===== OPERAÇÃO MG – SALVAR ===== */
+async function addOperacaoMG() {
+  const payload = {
+    secret: SECRET,
     type: "salvarMG",
     data: mgData.value,
     ciclo: mgCiclo.value,
-    volume: mgVolume.value,
+    volume: mgVolRoteirizado.value,
     backlog: mgBacklog.value,
     volumoso: mgVolumoso.value,
     qtdEstacao: mgQtdEstacao.value,
@@ -250,56 +519,67 @@ function salvarMGAPI() {
     fim: mgFim.value
   };
 
-  fetch(API_URL, {
+  await fetch(WORKER_URL, {
     method: "POST",
-    body: JSON.stringify(dados)
-  }).then(() => {
-    alert("Salvo!");
-    carregarOperacaoMG();
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload)
   });
+
+  alert("Registro salvo!");
+  limparCamposMG();
+  carregarHistoricoMG();
 }
 
-/* ==== CARREGAR LINE HAUL ==== */
-function carregarLineHaul() {
-  fetch(API_URL + "?type=listarLineHaul")
-    .then(r => r.json())
-    .then(dados => {
-      let html = "<tr>";
-      dados[0].forEach(h => html += `<th>${h}</th>`);
-      html += "</tr>";
+/* ===== OPERAÇÃO MG – CARREGAR HISTÓRICO ===== */
+async function carregarHistoricoMG() {
+  const res = await fetch(WORKER_URL + "?type=listarMG");
+  const data = await res.json();
 
-      for (let i = 1; i < dados.length; i++) {
-        html += "<tr>";
-        dados[i].forEach(c => html += `<td>${c}</td>`);
-        html += "</tr>";
-      }
+  const tbody = document.querySelector("#mgTable tbody");
+  tbody.innerHTML = "";
 
-      tableLH.innerHTML = html;
-    });
+  for (let i = 1; i < data.length; i++) {
+    const r = data[i];
+    tbody.innerHTML += `
+      <tr>
+        <td>${i}</td>
+        <td>${r[0] || ""}</td>
+        <td>${r[1] || ""}</td>
+        <td>${r[2] || ""}</td>
+        <td>${r[3] || ""}</td>
+        <td>${r[4] || ""}</td>
+        <td>${r[5] || ""}</td>
+        <td>${r[6] || ""}</td>
+        <td>${r[7] || ""}</td>
+        <td>${r[8] || ""}</td>
+      </tr>
+    `;
+  }
 }
 
-/* ==== CARREGAR OPERACAO MG ==== */
-function carregarOperacaoMG() {
-  fetch(API_URL + "?type=listarMG")
-    .then(r => r.json())
-    .then(dados => {
-      let html = "<tr>";
-      dados[0].forEach(h => html += `<th>${h}</th>`);
-      html += "</tr>";
+/* ===== OPERAÇÃO MG – EXPORTAR CSV ===== */
+async function exportarMGCsv() {
+  const res = await fetch(WORKER_URL + "?type=listarMG");
+  const data = await res.json();
 
-      for (let i = 1; i < dados.length; i++) {
-        html += "<tr>";
-        dados[i].forEach(c => html += `<td>${c}</td>`);
-        html += "</tr>";
-      }
+  let csv = "data,ciclo,vol_roteirizado,backlog,volumoso,qtd_estacao,inicio,fim,data_hora\n";
 
-      tableMG.innerHTML = html;
-    });
+  for (let i = 1; i < data.length; i++) {
+    const r = data[i];
+    csv += `${r[0]},${r[1]},${r[2]},${r[3]},${r[4]},${r[5]},${r[6]},${r[7]},${r[8]}\n`;
+  }
+
+  const blob = new Blob(["\ufeff" + csv], { type: "text/csv;charset=utf-8;" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "operacao_mg_historico.csv";
+  a.click();
 }
 </script>
 
 </body>
 </html>
+
 
 
 
